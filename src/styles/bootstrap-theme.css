@@ -1,0 +1,255 @@
+/* ============================================
+   BOOTSTRAP CUSTOM THEME
+   - Dark mode overrides
+   - Custom utilities
+   - Component enhancements
+   ============================================ */
+
+/* === CSS RESET & BASE === */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* === ROOT VARIABLES === */
+:root {
+    /* Bootstrap Overrides */
+    --bs-body-bg: #0f172a;
+    --bs-body-color: #f8fafc;
+    --bs-primary: #38bdf8;
+    --bs-secondary: #64748b;
+    --bs-dark: #1e293b;
+
+    /* Custom Variables */
+    --primary: #38bdf8;
+    --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+}
+
+/* === HTML & BODY === */
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    min-width: 320px;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* === TYPOGRAPHY === */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-wrap: balance;
+    font-weight: 700;
+}
+
+p {
+    text-wrap: pretty;
+    max-width: 75ch;
+}
+
+/* === BOOTSTRAP COMPONENT OVERRIDES === */
+
+/* Navbar */
+.navbar-custom {
+    background-color: rgba(15, 23, 42, 0.9) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color: #f8fafc !important;
+}
+
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+    color: var(--bs-primary) !important;
+}
+
+/* Cards */
+.card {
+    background-color: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: #0ea5e9;
+    border-color: #0ea5e9;
+    color: #0f172a;
+}
+
+.btn-outline-primary {
+    color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: #0f172a;
+}
+
+/* Forms */
+.form-control,
+.form-select {
+    background-color: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f8fafc;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: rgba(30, 41, 59, 0.7);
+    border-color: var(--bs-primary);
+    color: #f8fafc;
+    box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25);
+}
+
+.form-control::placeholder {
+    color: rgba(248, 250, 252, 0.5);
+}
+
+/* Modal */
+.modal-content {
+    background-color: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header,
+.modal-footer {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* === CUSTOM UTILITY CLASSES === */
+
+/* Letter Spacing */
+.letter-spacing-1 {
+    letter-spacing: 0.025em;
+}
+
+.letter-spacing-2 {
+    letter-spacing: 0.05em;
+}
+
+/* Border Utilities */
+.border-white-10 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.border-white-25 {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Text Gradient */
+.text-gradient {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Hover Effects */
+.hover-text-white:hover {
+    color: #f8fafc !important;
+}
+
+.hover-text-primary:hover {
+    color: var(--bs-primary) !important;
+}
+
+.hover-translate-y:hover {
+    transform: translateY(-4px);
+}
+
+.hover-opacity-100:hover {
+    opacity: 1 !important;
+}
+
+.hover-card {
+    transition: all 0.3s ease;
+}
+
+/* Z-Index */
+.z-n1 {
+    z-index: -1;
+}
+
+.z-1 {
+    z-index: 1;
+}
+
+.z-2 {
+    z-index: 2;
+}
+
+/* Blur */
+.blur-xl {
+    filter: blur(40px);
+}
+
+/* Icon Link */
+.icon-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Transition */
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+/* Object Fit */
+.object-fit-cover {
+    object-fit: cover;
+}
+
+/* Focus Ring */
+.focus-ring-primary:focus {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 2px;
+}
+
+/* Custom Heights */
+.h-200px {
+    height: 200px;
+}
+
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+/* === RESPONSIVE UTILITIES === */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
