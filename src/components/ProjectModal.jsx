@@ -1,60 +1,187 @@
 import React from 'react'
-import { Modal, Button, Badge } from 'react-bootstrap'
-import { ExternalLink, Github, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ExternalLink, Github, X, Sparkles, Code, Calendar, Layers } from 'lucide-react'
+import { Badge, Button } from 'react-bootstrap'
 
 const ProjectModal = ({ project, onClose }) => {
     if (!project) return null
 
+    const backdropVariants = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 }
+    }
+
+    const modalVariants = {
+        hidden: {
+            opacity: 0,
+            scale: 0.8,
+            y: 50
+        },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            transition: {
+                type: 'spring',
+                damping: 25,
+                stiffness: 300
+            }
+        },
+        exit: {
+            opacity: 0,
+            scale: 0.8,
+            y: 50,
+            transition: {
+                duration: 0.2
+            }
+        }
+    }
+
     return (
-        <Modal show={!!project} onHide={onClose} size="lg" centered className="project-modal">
-            <Modal.Header closeButton className="bg-dark border-secondary">
-                <Modal.Title className="text-white">{project.title}</Modal.Title>
-            </Modal.Header>
+        <AnimatePresence>
+            {project && (
+                <motion.div
+                    className="modal-backdrop-custom"
+                    variants={backdropVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    onClick={onClose}
+                >
+                    <motion.div
+                        className="modal-content-custom"
+                        variants={modalVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Close Button */}
+                        <button className="modal-close-btn" onClick={onClose}>
+                            <X size={24} />
+                        </button>
 
-            <Modal.Body className="bg-dark text-white p-4">
-                {project.image && (
-                    <div className="mb-4 rounded-3 overflow-hidden">
-                        <img
-                            src={project.image}
-                            alt={project.title}
-                            className="w-100 object-fit-cover"
-                            style={{ maxHeight: '300px' }}
-                        />
-                    </div>
-                )}
+                        {/* Image Header */}
+                        {project.image && (
+                            <div className="modal-image-wrapper">
+                                <img
+                                    src={project.image}
+                                    alt={project.title}
+                                    className="modal-image"
+                                />
+                                <div className="modal-image-overlay" />
 
-                <div className="mb-4">
-                    <h6 className="text-primary text-uppercase small fw-bold mb-3 letter-spacing-1">Technologies</h6>
-                    <div className="d-flex flex-wrap gap-2">
-                        {project.techStack.map((tech, index) => (
-                            <Badge key={index} bg="primary" className="bg-opacity-10 text-primary fw-medium px-3 py-2 rounded-pill">
-                                {tech}
-                            </Badge>
-                        ))}
-                    </div>
-                </div>
+                                {/* Category Badge */}
+                                {project.category && (
+                                    <div className="modal-category-badge">
+                                        <Sparkles size={14} />
+                                        {project.category}
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
-                <div className="mb-4">
-                    <h6 className="text-primary text-uppercase small fw-bold mb-3 letter-spacing-1">Description</h6>
-                    <p className="text-secondary lh-lg mb-3">
-                        {project.description}
-                    </p>
-                    <p className="text-secondary lh-lg mb-0">
-                        This project represents my commitment to clean code and user-centric design.
-                        Built with scalability in mind and following best practices for modern web development.
-                    </p>
-                </div>
-            </Modal.Body>
+                        {/* Content */}
+                        <div className="modal-body-custom">
+                            {/* Title */}
+                            <h2 className="modal-title-custom">
+                                {project.title}
+                            </h2>
 
-            <Modal.Footer className="bg-dark border-secondary">
-                <Button variant="outline-primary" href={project.link || "#"} className="me-2">
-                    Live Demo <ExternalLink size={16} className="ms-1" />
-                </Button>
-                <Button variant="outline-secondary" href="#">
-                    Source Code <Github size={16} className="ms-1" />
-                </Button>
-            </Modal.Footer>
-        </Modal>
+                            {/* Quick Info */}
+                            <div className="modal-quick-info">
+                                <div className="quick-info-item">
+                                    <Layers size={16} />
+                                    <span>Full Stack</span>
+                                </div>
+                                <div className="quick-info-item">
+                                    <Calendar size={16} />
+                                    <span>2024</span>
+                                </div>
+                                <div className="quick-info-item">
+                                    <Code size={16} />
+                                    <span>{project.techStack?.length || 0} Technologies</span>
+                                </div>
+                            </div>
+
+                            {/* Description */}
+                            <div className="modal-section">
+                                <h6 className="modal-section-title">
+                                    <span className="section-icon">📝</span>
+                                    About This Project
+                                </h6>
+                                <p className="modal-description">
+                                    {project.description}
+                                </p>
+                                <p className="modal-description text-secondary">
+                                    This project showcases my expertise in modern web development,
+                                    featuring clean architecture, responsive design, and optimal performance.
+                                    Built with scalability and maintainability in mind.
+                                </p>
+                            </div>
+
+                            {/* Tech Stack */}
+                            <div className="modal-section">
+                                <h6 className="modal-section-title">
+                                    <span className="section-icon">⚡</span>
+                                    Tech Stack
+                                </h6>
+                                <div className="tech-stack-grid">
+                                    {project.techStack?.map((tech, index) => (
+                                        <motion.div
+                                            key={index}
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            transition={{ delay: index * 0.1 }}
+                                        >
+                                            <Badge className="tech-badge-modern">
+                                                {tech}
+                                            </Badge>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Key Features */}
+                            <div className="modal-section">
+                                <h6 className="modal-section-title">
+                                    <span className="section-icon">✨</span>
+                                    Key Features
+                                </h6>
+                                <ul className="features-list">
+                                    <li>Responsive design for all devices</li>
+                                    <li>Modern and intuitive user interface</li>
+                                    <li>Optimized performance and loading speed</li>
+                                    <li>Clean and maintainable codebase</li>
+                                </ul>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="modal-actions">
+                                <Button
+                                    variant="primary"
+                                    className="modal-btn modal-btn-primary"
+                                    href={project.link || "#"}
+                                    target="_blank"
+                                >
+                                    <ExternalLink size={18} />
+                                    Live Demo
+                                </Button>
+                                <Button
+                                    variant="outline-light"
+                                    className="modal-btn modal-btn-secondary"
+                                    href="#"
+                                    target="_blank"
+                                >
+                                    <Github size={18} />
+                                    Source Code
+                                </Button>
+                            </div>
+                        </div>
+                    </motion.div>
+                </motion.div>
+            )}
+        </AnimatePresence>
     )
 }
 

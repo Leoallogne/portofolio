@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Row, Col, Button, Form, InputGroup, Badge } from 'react-bootstrap'
-import { Search, Filter, ArrowRight, Grid, List } from 'lucide-react'
+import { Search, Filter, ArrowRight, Grid, List, Sparkles } from 'lucide-react'
 import ProjectCard from '../components/ProjectCard'
 import ProjectModal from '../components/ProjectModal'
 import PageTransition from '../components/PageTransition'
 import ScrollReveal from '../components/ScrollReveal'
-import { projectsData } from '../data/portfolioData'
+import ProjectCarousel from '../components/ProjectCarousel'
+import TiltCard from '../components/TiltCard'
+import { projectsData, featuredProjects } from '../data/portfolioData'
 
 const Projects = () => {
     const [selectedProject, setSelectedProject] = useState(null)
@@ -44,10 +46,34 @@ const Projects = () => {
                                 Each project represents a unique challenge and learning experience.
                             </p>
                             <Badge bg="dark" className="px-3 py-2 fs-6 fw-normal">
-                                {filteredProjects.length} {filteredProjects.length === 1 ? 'Project' : 'Projects'}
+                                {projectsData.length} Projects
                             </Badge>
                         </div>
                     </ScrollReveal>
+
+                    {/* Featured Projects Carousel */}
+                    <ScrollReveal delay={0.1}>
+                        <div className="mb-5">
+                            <div className="d-flex align-items-center gap-3 mb-4">
+                                <Sparkles className="text-primary" size={24} />
+                                <h2 className="h4 text-white mb-0 fw-bold">Featured Projects</h2>
+                                <div className="flex-grow-1 border-bottom border-white-10"></div>
+                            </div>
+                            <ProjectCarousel
+                                projects={featuredProjects}
+                                onProjectClick={setSelectedProject}
+                            />
+                        </div>
+                    </ScrollReveal>
+
+                    {/* Divider */}
+                    <div className="my-5 py-3">
+                        <div className="d-flex align-items-center gap-3">
+                            <div className="flex-grow-1 border-bottom border-white-10"></div>
+                            <span className="text-secondary small text-uppercase letter-spacing-2">All Projects</span>
+                            <div className="flex-grow-1 border-bottom border-white-10"></div>
+                        </div>
+                    </div>
 
                     {/* Search, Filter & View Toggle */}
                     <ScrollReveal delay={0.2}>
@@ -73,7 +99,7 @@ const Projects = () => {
                                         value={filter}
                                         onChange={(e) => setFilter(e.target.value)}
                                     >
-                                        {categories.slice(0, 8).map((cat, i) => (
+                                        {categories.slice(0, 10).map((cat, i) => (
                                             <option key={i} value={cat}>
                                                 {cat === 'All' ? '🔍 All Technologies' : `⚡ ${cat}`}
                                             </option>
@@ -107,11 +133,13 @@ const Projects = () => {
                         {filteredProjects.length > 0 ? (
                             filteredProjects.map((project, index) => (
                                 <Col key={index} md={6} lg={viewMode === 'grid' ? 4 : 12}>
-                                    <ScrollReveal delay={index * 0.1} width="100%">
-                                        <ProjectCard
-                                            project={project}
-                                            onClick={() => setSelectedProject(project)}
-                                        />
+                                    <ScrollReveal delay={index * 0.05} width="100%">
+                                        <TiltCard intensity={10}>
+                                            <ProjectCard
+                                                project={project}
+                                                onClick={() => setSelectedProject(project)}
+                                            />
+                                        </TiltCard>
                                     </ScrollReveal>
                                 </Col>
                             ))

@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Projects from './pages/Projects'
 import Contact from './pages/Contact'
 import ParticlesBackground from './components/ParticlesBackground'
+import ScrollProgress from './components/ScrollProgress'
 
 const AnimatedRoutes = () => {
   const location = useLocation()
@@ -25,6 +26,7 @@ function App() {
   return (
     <Router>
       <div className="app">
+        <ScrollProgress />
         <ParticlesBackground />
         <Navbar />
         <main>

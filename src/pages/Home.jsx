@@ -11,6 +11,8 @@ import PageTransition from '../components/PageTransition'
 import ScrollReveal from '../components/ScrollReveal'
 import ProjectModal from '../components/ProjectModal'
 import BrandCarousel from '../components/BrandCarousel'
+import TiltCard from '../components/TiltCard'
+import AnimatedCounter from '../components/AnimatedCounter'
 import { skillsData, projectsData, servicesData } from '../data/portfolioData'
 
 const Home = () => {
@@ -79,15 +81,21 @@ const Home = () => {
                                 <ScrollReveal delay={0.4}>
                                     <div className="d-flex gap-4 border-top border-secondary border-opacity-25 pt-4 flex-wrap">
                                         <div className="pe-4">
-                                            <h3 className="display-4 fw-bold text-primary mb-0">3+</h3>
+                                            <h3 className="display-4 fw-bold text-primary mb-0 counter-glow">
+                                                <AnimatedCounter end={3} duration={2000} suffix="+" />
+                                            </h3>
                                             <span className="text-muted small text-uppercase fw-bold letter-spacing-1">Years Exp</span>
                                         </div>
                                         <div className="pe-4">
-                                            <h3 className="display-4 fw-bold text-primary mb-0">20+</h3>
+                                            <h3 className="display-4 fw-bold text-primary mb-0 counter-glow">
+                                                <AnimatedCounter end={20} duration={2500} suffix="+" />
+                                            </h3>
                                             <span className="text-muted small text-uppercase fw-bold letter-spacing-1">Projects</span>
                                         </div>
                                         <div>
-                                            <h3 className="display-4 fw-bold text-primary mb-0">100%</h3>
+                                            <h3 className="display-4 fw-bold text-primary mb-0 counter-glow">
+                                                <AnimatedCounter end={100} duration={3000} suffix="%" />
+                                            </h3>
                                             <span className="text-muted small text-uppercase fw-bold letter-spacing-1">Commitment</span>
                                         </div>
                                     </div>
@@ -112,7 +120,9 @@ const Home = () => {
                             {skillsData.map((skill, index) => (
                                 <Col key={index} md={6} lg={4}>
                                     <ScrollReveal delay={index * 0.1} width="100%">
-                                        <SkillCard {...skill} />
+                                        <TiltCard intensity={10}>
+                                            <SkillCard {...skill} />
+                                        </TiltCard>
                                     </ScrollReveal>
                                 </Col>
                             ))}
@@ -141,10 +151,12 @@ const Home = () => {
                                 {projectsData.slice(0, 3).map((project, index) => (
                                     <Col key={index} md={6} lg={4}>
                                         <ScrollReveal delay={index * 0.1} width="100%">
-                                            <ProjectCard
-                                                project={project}
-                                                onClick={() => setSelectedProject(project)}
-                                            />
+                                            <TiltCard intensity={12}>
+                                                <ProjectCard
+                                                    project={project}
+                                                    onClick={() => setSelectedProject(project)}
+                                                />
+                                            </TiltCard>
                                         </ScrollReveal>
                                     </Col>
                                 ))}
@@ -174,7 +186,9 @@ const Home = () => {
                             {servicesData.map((service, index) => (
                                 <Col key={index} md={6} lg={4}>
                                     <ScrollReveal delay={index * 0.1} width="100%">
-                                        <ServiceCard {...service} />
+                                        <TiltCard intensity={10}>
+                                            <ServiceCard {...service} />
+                                        </TiltCard>
                                     </ScrollReveal>
                                 </Col>
                             ))}
