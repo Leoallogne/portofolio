@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 const AnimatedCounter = ({
     end,
@@ -11,6 +11,30 @@ const AnimatedCounter = ({
     const [count, setCount] = useState(0)
     const [hasStarted, setHasStarted] = useState(false)
     const counterRef = useRef(null)
+
+    const animateCount = useCallback(() => {
+        const startTime = performance.now()
+        const startValue = 0
+
+        const updateCount = (currentTime) => {
+            const elapsed = currentTime - startTime
+            const progress = Math.min(elapsed / duration, 1)
+
+            // Easing function (ease-out-expo)
+            const easeOutExpo = 1 - Math.pow(2, -10 * progress)
+            const currentValue = Math.floor(startValue + (end - startValue) * easeOutExpo)
+
+            setCount(currentValue)
+
+            if (progress < 1) {
+                requestAnimationFrame(updateCount)
+            } else {
+                setCount(end)
+            }
+        }
+
+        requestAnimationFrame(updateCount)
+    }, [duration, end])
 
     useEffect(() => {
         if (!startOnView) {
@@ -35,31 +59,7 @@ const AnimatedCounter = ({
         }
 
         return () => observer.disconnect()
-    }, [hasStarted, startOnView])
-
-    const animateCount = () => {
-        const startTime = performance.now()
-        const startValue = 0
-
-        const updateCount = (currentTime) => {
-            const elapsed = currentTime - startTime
-            const progress = Math.min(elapsed / duration, 1)
-
-            // Easing function (ease-out-expo)
-            const easeOutExpo = 1 - Math.pow(2, -10 * progress)
-            const currentValue = Math.floor(startValue + (end - startValue) * easeOutExpo)
-
-            setCount(currentValue)
-
-            if (progress < 1) {
-                requestAnimationFrame(updateCount)
-            } else {
-                setCount(end)
-            }
-        }
-
-        requestAnimationFrame(updateCount)
-    }
+    }, [animateCount, hasStarted, startOnView])
 
     return (
         <span ref={counterRef} className={className}>

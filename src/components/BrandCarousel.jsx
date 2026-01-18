@@ -15,10 +15,12 @@ const brands = [
 
 const infiniteBrands = [...brands, ...brands, ...brands]
 
+const MotionDiv = motion.div
+
 const BrandCarousel = () => {
     return (
         <div className="py-5 overflow-hidden bg-dark bg-opacity-25 border-y border-white-10">
-            <motion.div
+            <MotionDiv
                 className="d-flex gap-5 px-3"
                 style={{ width: 'max-content' }}
                 animate={{ x: [0, -1000] }}
@@ -37,7 +39,7 @@ const BrandCarousel = () => {
                         <span className="fw-medium">{brand.name}</span>
                     </div>
                 ))}
-            </motion.div>
+            </MotionDiv>
         </div>
     )
 }

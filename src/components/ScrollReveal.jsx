@@ -1,12 +1,14 @@
 import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
+const MotionDiv = motion.div
+
 const ScrollReveal = ({ children, delay = 0, width = "100%" }) => {
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, margin: "-50px" })
 
     return (
-        <motion.div
+        <MotionDiv
             ref={ref}
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
@@ -14,7 +16,7 @@ const ScrollReveal = ({ children, delay = 0, width = "100%" }) => {
             style={{ width, height: "100%" }} // Ensure full height for grid items
         >
             {children}
-        </motion.div>
+        </MotionDiv>
     )
 }
 

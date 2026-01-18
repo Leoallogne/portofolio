@@ -1,6 +1,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
+const MotionDiv = motion.div
+
 const pageVariants = {
     initial: {
         opacity: 0,
@@ -27,7 +29,7 @@ const pageTransition = {
 
 const PageTransition = ({ children }) => {
     return (
-        <motion.div
+        <MotionDiv
             initial="initial"
             animate="in"
             exit="out"
@@ -36,7 +38,7 @@ const PageTransition = ({ children }) => {
             style={{ width: '100%', overflowX: 'hidden' }}
         >
             {children}
-        </motion.div>
+        </MotionDiv>
     )
 }
 

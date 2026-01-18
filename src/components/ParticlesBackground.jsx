@@ -22,36 +22,36 @@ const ParticlesBackground = () => {
         const connectionDistance = 150
         const moveSpeed = 0.5
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width
-                this.y = Math.random() * canvas.height
-                this.vx = (Math.random() - 0.5) * moveSpeed
-                this.vy = (Math.random() - 0.5) * moveSpeed
-                this.size = Math.random() * 2 + 1
-                this.color = `rgba(56, 189, 248, ${Math.random() * 0.5})` // Sky blue with random opacity
+        const createParticle = () => {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * moveSpeed,
+                vy: (Math.random() - 0.5) * moveSpeed,
+                size: Math.random() * 2 + 1,
+                color: `rgba(56, 189, 248, ${Math.random() * 0.5})`,
             }
+        }
 
-            update() {
-                this.x += this.vx
-                this.y += this.vy
+        const updateParticle = (p) => {
+            p.x += p.vx
+            p.y += p.vy
 
-                // Bounce off edges
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1
-            }
+            // Bounce off edges
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1
+        }
 
-            draw() {
-                ctx.fillStyle = this.color
-                ctx.beginPath()
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-                ctx.fill()
-            }
+        const drawParticle = (p) => {
+            ctx.fillStyle = p.color
+            ctx.beginPath()
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+            ctx.fill()
         }
 
         // Initialize particles
         for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle())
+            particles.push(createParticle())
         }
 
         const animate = () => {
@@ -77,8 +77,8 @@ const ParticlesBackground = () => {
 
             // Update and draw particles
             particles.forEach(particle => {
-                particle.update()
-                particle.draw()
+                updateParticle(particle)
+                drawParticle(particle)
             })
 
             animationFrameId = requestAnimationFrame(animate)

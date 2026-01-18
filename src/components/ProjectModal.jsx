@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ExternalLink, Github, X, Sparkles, Code, Calendar, Layers } from 'lucide-react'
 import { Badge, Button } from 'react-bootstrap'
 
+const MotionDiv = motion.div
+
 const ProjectModal = ({ project, onClose }) => {
     if (!project) return null
 
@@ -40,7 +42,7 @@ const ProjectModal = ({ project, onClose }) => {
     return (
         <AnimatePresence>
             {project && (
-                <motion.div
+                <MotionDiv
                     className="modal-backdrop-custom"
                     variants={backdropVariants}
                     initial="hidden"
@@ -48,7 +50,7 @@ const ProjectModal = ({ project, onClose }) => {
                     exit="hidden"
                     onClick={onClose}
                 >
-                    <motion.div
+                    <MotionDiv
                         className="modal-content-custom"
                         variants={modalVariants}
                         initial="hidden"
@@ -128,7 +130,7 @@ const ProjectModal = ({ project, onClose }) => {
                                 </h6>
                                 <div className="tech-stack-grid">
                                     {project.techStack?.map((tech, index) => (
-                                        <motion.div
+                                        <MotionDiv
                                             key={index}
                                             initial={{ opacity: 0, scale: 0.8 }}
                                             animate={{ opacity: 1, scale: 1 }}
@@ -137,7 +139,7 @@ const ProjectModal = ({ project, onClose }) => {
                                             <Badge className="tech-badge-modern">
                                                 {tech}
                                             </Badge>
-                                        </motion.div>
+                                        </MotionDiv>
                                     ))}
                                 </div>
                             </div>
@@ -178,8 +180,8 @@ const ProjectModal = ({ project, onClose }) => {
                                 </Button>
                             </div>
                         </div>
-                    </motion.div>
-                </motion.div>
+                    </MotionDiv>
+                </MotionDiv>
             )}
         </AnimatePresence>
     )

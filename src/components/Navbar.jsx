@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Nav, Button } from 'react-bootstrap'
-import { NavLink, Link, useLocation } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import { Code2, Menu, X } from 'lucide-react'
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const location = useLocation()
-
-    // Close sidebar on route change
-    useEffect(() => {
-        setIsOpen(false)
-    }, [location])
 
     // Prevent body scroll when sidebar is open
     useEffect(() => {
