@@ -13,17 +13,20 @@ const brands = [
     { name: 'AWS', icon: Cpu },
 ]
 
-const infiniteBrands = [...brands, ...brands, ...brands]
-
 const MotionDiv = motion.div
 
-const BrandCarousel = () => {
+const BrandCarousel = ({ reverse = false, className = '', items = null }) => {
+    const baseItems = Array.isArray(items) && items.length > 0 ? items : brands
+    const infiniteItems = [...baseItems, ...baseItems, ...baseItems]
+    const distance = 1000
+    const xKeyframes = reverse ? [-distance, 0] : [0, -distance]
+
     return (
-        <div className="py-5 overflow-hidden bg-dark bg-opacity-25 border-y border-white-10">
+        <div className={`py-5 overflow-hidden bg-dark bg-opacity-25 border-y border-white-10 ${className}`.trim()}>
             <MotionDiv
                 className="d-flex gap-5 px-3"
                 style={{ width: 'max-content' }}
-                animate={{ x: [0, -1000] }}
+                animate={{ x: xKeyframes }}
                 transition={{
                     x: {
                         repeat: Infinity,
@@ -33,12 +36,27 @@ const BrandCarousel = () => {
                     },
                 }}
             >
-                {infiniteBrands.map((brand, index) => (
-                    <div key={index} className="d-flex align-items-center gap-3 text-secondary">
-                        <brand.icon size={24} />
-                        <span className="fw-medium">{brand.name}</span>
-                    </div>
-                ))}
+                {infiniteItems.map((item, index) => {
+                    const Icon = item?.icon
+                    const hasImage = typeof item?.imgSrc === 'string' && item.imgSrc.length > 0
+
+                    return (
+                        <div key={index} className="brand-carousel-item d-flex align-items-center gap-3 text-secondary">
+                            {hasImage ? (
+                                <img
+                                    src={item.imgSrc}
+                                    alt={item?.name ? `${item.name} logo` : 'Company logo'}
+                                    className="brand-carousel-logo"
+                                    loading="lazy"
+                                />
+                            ) : Icon ? (
+                                <Icon size={24} aria-hidden="true" />
+                            ) : null}
+
+                            <span className="fw-medium brand-carousel-name">{item?.name}</span>
+                        </div>
+                    )
+                })}
             </MotionDiv>
         </div>
     )

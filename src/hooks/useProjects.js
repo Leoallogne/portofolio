@@ -5,10 +5,25 @@ export const useProjects = () => {
   const projects = useMemo(() => {
     return (projectsData || []).map((project, index) => {
       const id = project?.id || `${project?.title || "project"}-${index}`
+
+      const existingLinks = Array.isArray(project?.links) ? project.links : []
+      const hasDemo = existingLinks.some((l) => l?.type === 'demo' && l?.url)
+      const hasGithub = existingLinks.some((l) => l?.type === 'github' && l?.url)
+
+      const normalizedLinks = [...existingLinks]
+      if (!hasDemo && typeof project?.demoUrl === 'string' && project.demoUrl) {
+        normalizedLinks.push({ type: 'demo', url: project.demoUrl })
+      }
+      if (!hasGithub && typeof project?.githubUrl === 'string' && project.githubUrl) {
+        normalizedLinks.push({ type: 'github', url: project.githubUrl })
+      }
+
       return {
         ...project,
         id,
+        category: typeof project?.category === 'string' ? project.category : '',
         techStack: Array.isArray(project?.techStack) ? project.techStack : [],
+        links: normalizedLinks,
       }
     })
   }, [])

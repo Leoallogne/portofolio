@@ -160,14 +160,15 @@ const Projects = () => {
                   {filteredProjects.map((project, index) => (
                     <Col 
                       key={project.id || `${project.title}-${index}`}
-                      xs={4}
+                      xs={6}
                       sm={4}
-                      md={6}
-                      lg={4}
+                      md={4}
+                      lg={3}
                     >
                       <ProjectCard
                         project={project}
                         onClick={() => handleProjectSelect(project)}
+                        compact
                       />
                     </Col>
                   ))}
@@ -182,7 +183,6 @@ const Projects = () => {
                         <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
                           <div className="flex-grow-1">
                             <h3 className="project-title">{project.title}</h3>
-                            <p className="project-description">{project.description}</p>
 
                             <div className="d-flex flex-wrap gap-2 mb-0">
                               {(project.techStack || []).slice(0, 5).map((tech, i) => (
@@ -200,7 +200,7 @@ const Projects = () => {
                             onClick={() => handleProjectSelect(project)}
                             className="btn btn-outline-primary btn-sm mt-3 mt-md-0"
                           >
-                            View Project
+                            Lihat selengkapnya
                           </button>
                         </div>
                       </div>
