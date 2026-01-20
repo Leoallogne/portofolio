@@ -83,8 +83,19 @@ const Contact = () => {
 
     return (
         <PageTransition>
-            <div className="py-5 mt-5">
-                <Container>
+            <div className="contact-page contact-page--v2" id="top">
+                <div className="contact-page-bg" aria-hidden="true">
+                    <div className="contact-page-bg-base" />
+                    <div
+                        className="contact-page-bg-radials"
+                        style={{
+                            backgroundImage:
+                                'radial-gradient(circle at 12% 18%, rgba(34, 211, 238, 0.18) 0%, transparent 28%), radial-gradient(circle at 88% 70%, rgba(168, 85, 247, 0.16) 0%, transparent 30%)',
+                        }}
+                    />
+                </div>
+
+                <Container className="position-relative py-5 mt-5">
                     {/* Hero Section */}
                     <ScrollReveal>
                         <div className="text-center mb-5 pb-4">
@@ -104,7 +115,7 @@ const Contact = () => {
                         <Row className="g-3 mb-5 justify-content-center">
                             {quickFacts.map((fact, index) => (
                                 <Col key={index} xs={6} md={4} lg={3}>
-                                    <div className="text-center p-3 rounded-4 bg-dark bg-opacity-25 border border-white-10">
+                                    <div className="text-center p-3 rounded-4 bg-dark bg-opacity-25 border border-white-10 contact-quick-fact">
                                         <fact.icon className="text-primary mb-2" size={24} />
                                         <div className="text-secondary small text-uppercase mb-1">{fact.label}</div>
                                         <div className="text-white fw-bold">{fact.value}</div>
@@ -123,7 +134,7 @@ const Contact = () => {
                                     <div className="d-flex flex-column gap-3 mb-4">
                                         {contactInfo.map((item, index) => (
                                             <TiltCard key={index} intensity={8}>
-                                                <Card className="contact-info-card border-0 bg-dark bg-opacity-50 border border-white-10 overflow-hidden">
+                                                <Card className="contact-info-card border-0 bg-dark bg-opacity-50 border border-white-10 overflow-hidden contact-panel">
                                                     <Card.Body className="p-4">
                                                         <div className="d-flex align-items-start gap-3">
                                                             <div
@@ -158,7 +169,7 @@ const Contact = () => {
                                     </div>
 
                                     {/* Social Links */}
-                                    <Card className="border-0 bg-dark bg-opacity-50 border border-white-10">
+                                    <Card className="border-0 bg-dark bg-opacity-50 border border-white-10 contact-panel">
                                         <Card.Body className="p-4">
                                             <h3 className="h5 text-white fw-bold mb-4">Connect on Social</h3>
                                             <div className="d-flex gap-3 flex-wrap">
@@ -190,7 +201,7 @@ const Contact = () => {
                         <Col lg={7}>
                             <ScrollReveal delay={0.3}>
                                 <TiltCard intensity={5}>
-                                    <Card className="border-0 bg-dark bg-opacity-50 border border-white-10">
+                                    <Card className="border-0 bg-dark bg-opacity-50 border border-white-10 contact-panel">
                                         <Card.Body className="p-4 p-md-5">
                                             <div className="d-flex align-items-center gap-3 mb-4">
                                                 <div className="p-3 rounded-3" style={{ background: 'linear-gradient(135deg, #38bdf8, #818cf8)' }}>
@@ -321,7 +332,7 @@ const Contact = () => {
 
                     {/* FAQ Section */}
                     <ScrollReveal delay={0.4}>
-                        <div className="text-center p-5 rounded-4 bg-dark bg-opacity-25 border border-white-10">
+                        <div className="text-center p-5 rounded-4 bg-dark bg-opacity-25 border border-white-10 contact-cta-panel">
                             <div className="display-4 mb-3">🤝</div>
                             <h4 className="text-white fw-bold mb-3">Let's Build Something Amazing</h4>
                             <p className="text-secondary mb-0 mx-auto" style={{ maxWidth: '600px' }}>

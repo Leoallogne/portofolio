@@ -5,14 +5,15 @@ const ServiceCard = ({ title, description, icon: Icon }) => {
     const IconComponent = Icon
 
     return (
-        <Card className="h-100 border border-white-10 bg-dark bg-opacity-50 text-white text-center hover-translate-y transition-all">
-            <Card.Body className="d-flex flex-column align-items-center p-4">
-                <div className="p-4 rounded-circle bg-primary bg-opacity-10 text-primary mb-4 position-relative">
-                    <IconComponent size={32} />
-                    <div className="position-absolute top-0 start-0 w-100 h-100 rounded-circle bg-primary bg-opacity-25 blur-xl z-n1"></div>
+        <Card className="h-100 border-0 text-white text-center service-card-new overflow-hidden position-relative">
+            <div className="service-card-new__bg" aria-hidden="true" />
+            <Card.Body className="d-flex flex-column align-items-center p-4 p-lg-5 position-relative">
+                <div className="service-icon-chip mb-4">
+                    <span className="service-icon-chip__glow" aria-hidden="true" />
+                    <IconComponent size={32} className="text-white" />
                 </div>
-                <Card.Title className="h5 fw-bold mb-3">{title}</Card.Title>
-                <Card.Text className="text-secondary lh-lg">
+                <Card.Title className="h5 fw-bold mb-3 service-title">{title}</Card.Title>
+                <Card.Text className="service-desc mb-0">
                     {description}
                 </Card.Text>
             </Card.Body>
