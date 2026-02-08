@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Nav, Button } from 'react-bootstrap'
 import { NavLink, Link } from 'react-router-dom'
 import { Code2, Menu, X } from 'lucide-react'
 
@@ -20,31 +19,31 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="navbar-custom py-3 fixed-top">
-                <Container className="d-flex align-items-center justify-content-between">
+            <nav className="navbar-custom py-3 fixed top-0 left-0 right-0 z-50">
+                <div className="container mx-auto px-4 flex items-center justify-between">
                     {/* Brand */}
-                    <Link to="/" className="d-flex align-items-center gap-2 text-decoration-none">
-                        <Code2 size={28} className="text-primary" />
-                        <span className="fw-bold text-white">Muhammad<span className="text-primary">Syafiq</span></span>
+                    <Link to="/" className="flex items-center gap-2 text-decoration-none group" onClick={() => setIsOpen(false)}>
+                        <Code2 size={28} className="text-primary transition-transform duration-300 group-hover:rotate-12" />
+                        <span className="font-bold text-white text-xl tracking-tight">Muhammad<span className="text-primary">Syafiq</span></span>
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <Nav className="d-none d-lg-flex gap-4 align-items-center">
-                        <Nav.Link as={NavLink} to="/" end className="nav-link-custom">Home</Nav.Link>
-                        <Nav.Link as={NavLink} to="/projects" className="nav-link-custom">Projects</Nav.Link>
-                        <Nav.Link as={NavLink} to="/contact" className="nav-link-custom">Contact</Nav.Link>
-                    </Nav>
+                    <div className="hidden lg:flex gap-1 items-center bg-white/5 px-2 py-1.5 rounded-full border border-white/10 backdrop-blur-md">
+                        <NavLink to="/" end className={({ isActive }) => `nav-link-custom !px-5 rounded-full ${isActive ? 'active' : ''}`}>Home</NavLink>
+                        <NavLink to="/projects" className={({ isActive }) => `nav-link-custom !px-5 rounded-full ${isActive ? 'active' : ''}`}>Projects</NavLink>
+                        <NavLink to="/contact" className={({ isActive }) => `nav-link-custom !px-5 rounded-full ${isActive ? 'active' : ''}`}>Contact</NavLink>
+                    </div>
 
                     {/* Desktop CTA */}
-                    <div className="d-none d-lg-block">
-                        <Button as={Link} to="/contact" variant="primary" className="px-4 fw-semibold rounded-pill">
+                    <div className="hidden lg:block">
+                        <Link to="/contact" className="btn-gradient text-decoration-none">
                             Hire Me
-                        </Button>
+                        </Link>
                     </div>
 
                     {/* Mobile Toggle Button - Modern Hamburger */}
                     <button
-                        className={`hamburger-btn d-lg-none ${isOpen ? 'active' : ''}`}
+                        className={`hamburger-btn lg:hidden ${isOpen ? 'active' : ''}`}
                         onClick={() => setIsOpen(!isOpen)}
                         aria-label="Toggle navigation"
                     >
@@ -52,7 +51,7 @@ const Navbar = () => {
                         <span className="hamburger-line"></span>
                         <span className="hamburger-line"></span>
                     </button>
-                </Container>
+                </div>
             </nav>
 
             {/* Mobile Sidebar Overlay */}
@@ -64,9 +63,9 @@ const Navbar = () => {
             {/* Mobile Sidebar */}
             <div className={`mobile-sidebar ${isOpen ? 'active' : ''}`}>
                 <div className="sidebar-header">
-                    <Link to="/" className="d-flex align-items-center gap-2 text-decoration-none" onClick={() => setIsOpen(false)}>
+                    <Link to="/" className="flex items-center gap-2 text-decoration-none" onClick={() => setIsOpen(false)}>
                         <Code2 size={28} className="text-primary" />
-                        <span className="fw-bold text-white">Muhammad<span className="text-primary">Syafiq</span></span>
+                        <span className="font-bold text-white text-lg">Muhammad<span className="text-primary">Syafiq</span></span>
                     </Link>
                     <button className="close-btn" onClick={() => setIsOpen(false)} aria-label="Close menu">
                         <X size={24} />
@@ -102,16 +101,14 @@ const Navbar = () => {
                 </nav>
 
                 <div className="sidebar-footer">
-                    <Button
-                        as={Link}
+                    <Link
                         to="/contact"
-                        variant="primary"
-                        className="w-100 py-3 fw-semibold rounded-pill"
+                        className="btn-gradient w-full block text-center py-3 rounded-xl text-decoration-none"
                         onClick={() => setIsOpen(false)}
                     >
                         Hire Me
-                    </Button>
-                    <p className="text-secondary text-center mt-4 mb-0 small">
+                    </Link>
+                    <p className="text-slate-500 text-center mt-6 mb-0 text-xs font-medium uppercase tracking-widest">
                         © 2026 Muhammad Syafiq
                     </p>
                 </div>

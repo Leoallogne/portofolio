@@ -1,104 +1,112 @@
 import React, { memo } from 'react';
-import { Form, InputGroup, ButtonGroup, Button, Badge } from 'react-bootstrap';
 import { Search, Filter, Grid, List, SortAsc, SortDesc } from 'lucide-react';
 
-const ProjectFilters = memo(({ 
-  searchTerm, 
-  onSearchChange, 
-  categories, 
-  selectedCategory, 
-  onCategoryChange, 
-  viewMode, 
+const ProjectFilters = memo(({
+  searchTerm,
+  onSearchChange,
+  categories,
+  selectedCategory,
+  onCategoryChange,
+  viewMode,
   onViewModeChange,
   sortBy,
   onSortChange
 }) => {
   return (
-    <div className="mb-5">
+    <div className="mb-8 md:mb-12">
       {/* Search and View Toggle */}
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-4 mb-4">
-        <div className="w-100" style={{ maxWidth: '500px' }}>
-          <InputGroup className="border border-secondary border-opacity-25 rounded-pill overflow-hidden">
-            <InputGroup.Text className="bg-dark border-0 text-secondary">
-              <Search size={18} />
-            </InputGroup.Text>
-            <Form.Control
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 md:mb-8">
+        <div className="w-full md:max-w-lg">
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search size={18} className="text-slate-400 group-focus-within:text-primary transition-colors" />
+            </div>
+            <input
               type="search"
-              placeholder="Search projects..."
-              className="bg-dark text-white border-0 shadow-none"
+              placeholder="Search projects by title, tech stack, or description..."
+              className="block w-full pl-10 pr-4 py-3 bg-slate-900 border border-white/10 rounded-full text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-all shadow-sm"
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               aria-label="Search projects"
             />
-          </InputGroup>
+          </div>
         </div>
-        
-        <div className="d-flex gap-3">
-          <ButtonGroup aria-label="View mode">
-            <Button
-              variant={viewMode === 'grid' ? 'primary' : 'outline-secondary'}
+
+        <div className="flex gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+          <div className="flex bg-slate-900 rounded-lg p-1 border border-white/10 flex-shrink-0" role="group" aria-label="View mode">
+            <button
               onClick={() => onViewModeChange('grid')}
               aria-label="Grid view"
-              className="d-flex align-items-center gap-2"
+              className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all ${viewMode === 'grid'
+                  ? 'bg-primary text-white shadow-md'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
             >
               <Grid size={18} />
-              <span className="d-none d-sm-inline">Grid</span>
-            </Button>
-            <Button
-              variant={viewMode === 'list' ? 'primary' : 'outline-secondary'}
+              <span className="hidden sm:inline text-sm font-medium">Grid</span>
+            </button>
+            <button
               onClick={() => onViewModeChange('list')}
               aria-label="List view"
-              className="d-flex align-items-center gap-2"
+              className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all ${viewMode === 'list'
+                  ? 'bg-primary text-white shadow-md'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
             >
               <List size={18} />
-              <span className="d-none d-sm-inline">List</span>
-            </Button>
-          </ButtonGroup>
+              <span className="hidden sm:inline text-sm font-medium">List</span>
+            </button>
+          </div>
 
-          <ButtonGroup aria-label="Sort options">
-            <Button
-              variant={sortBy === 'newest' ? 'primary' : 'outline-secondary'}
+          <div className="flex bg-slate-900 rounded-lg p-1 border border-white/10 flex-shrink-0" role="group" aria-label="Sort options">
+            <button
               onClick={() => onSortChange('newest')}
               aria-label="Sort by newest"
-              className="d-flex align-items-center gap-2"
+              className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all ${sortBy === 'newest'
+                  ? 'bg-primary text-white shadow-md'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
             >
               <SortDesc size={18} />
-              <span className="d-none d-sm-inline">Newest</span>
-            </Button>
-            <Button
-              variant={sortBy === 'oldest' ? 'primary' : 'outline-secondary'}
+              <span className="hidden sm:inline text-sm font-medium">Newest</span>
+            </button>
+            <button
               onClick={() => onSortChange('oldest')}
               aria-label="Sort by oldest"
-              className="d-flex align-items-center gap-2"
+              className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all ${sortBy === 'oldest'
+                  ? 'bg-primary text-white shadow-md'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
             >
               <SortAsc size={18} />
-              <span className="d-none d-sm-inline">Oldest</span>
-            </Button>
-          </ButtonGroup>
+              <span className="hidden sm:inline text-sm font-medium">Oldest</span>
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Category Filters */}
-      <div className="d-flex flex-wrap gap-2 mb-4">
-        <span className="text-secondary d-flex align-items-center me-2">
-          <Filter size={18} className="me-1" />
+      <div className="flex flex-wrap items-center gap-2 mb-6 md:mb-8">
+        <span className="text-slate-400 flex items-center mr-2 text-sm font-medium">
+          <Filter size={16} className="mr-2" />
           Filter by:
         </span>
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => onCategoryChange(category)}
-            className={`btn btn-sm rounded-pill px-3 ${
-              selectedCategory === category 
-                ? 'btn-primary' 
-                : 'btn-outline-secondary text-white'
-            }`}
-            aria-pressed={selectedCategory === category}
-            aria-label={`Filter by ${category} category`}
-          >
-            {category}
-          </button>
-        ))}
+        <div className="flex flex-wrap gap-2">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => onCategoryChange(category)}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all border ${selectedCategory === category
+                  ? 'bg-primary border-primary text-white shadow-lg shadow-primary/25'
+                  : 'bg-transparent border-white/10 text-slate-400 hover:text-white hover:border-white/30 hover:bg-white/5'
+                }`}
+              aria-pressed={selectedCategory === category}
+              aria-label={`Filter by ${category} category`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

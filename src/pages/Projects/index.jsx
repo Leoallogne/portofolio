@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Spinner, Alert, Button } from 'react-bootstrap';
 import { AnimatePresence } from 'framer-motion';
 import { Sparkles, MessageSquare, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -17,20 +16,20 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [viewMode, setViewMode] = useState('grid');
   const [sortBy, setSortBy] = useState('newest');
-  
+
   // Reset scroll position when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = 'Projects | Your Portfolio';
   }, []);
-  
+
   const {
     filteredProjects,
     categories,
     filters,
     updateFilter,
   } = useProjectFilters(projects);
-  
+
   // Update document title with project count
   useEffect(() => {
     if (!loading && !error) {
@@ -67,13 +66,11 @@ const Projects = () => {
   if (loading) {
     return (
       <PageTransition>
-        <Container className="py-5 text-center">
-          <Spinner animation="border" role="status" variant="primary" className="mb-3">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-          <h3 className="h4 text-white mb-3">Loading Projects</h3>
-          <p className="text-muted">Fetching the latest projects...</p>
-        </Container>
+        <div className="container mx-auto px-4 py-20 text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+          <h3 className="text-xl text-white mb-2 font-bold">Loading Projects</h3>
+          <p className="text-slate-400">Fetching the latest projects...</p>
+        </div>
       </PageTransition>
     );
   }
@@ -81,22 +78,22 @@ const Projects = () => {
   if (error) {
     return (
       <PageTransition>
-        <Container className="py-5">
-          <Alert variant="danger" className="text-center">
-            <Alert.Heading>Error Loading Projects</Alert.Heading>
-            <p>We encountered an issue while loading the projects. Please try again later.</p>
-            <p className="mb-0">
-              <small className="text-muted">Error: {error.message || 'Unknown error occurred'}</small>
+        <div className="container mx-auto px-4 py-20">
+          <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-8 text-center max-w-2xl mx-auto">
+            <h3 className="text-xl text-red-500 mb-2 font-bold">Error Loading Projects</h3>
+            <p className="text-slate-300 mb-2">We encountered an issue while loading the projects. Please try again later.</p>
+            <p className="mb-0 text-sm text-slate-500">
+              Error: {error.message || 'Unknown error occurred'}
             </p>
-          </Alert>
-        </Container>
+          </div>
+        </div>
       </PageTransition>
     );
   }
 
   return (
     <PageTransition>
-      <div className="projects-page projects-page--v2" id="top">
+      <div className="projects-page projects-page--v2 min-h-screen" id="top">
         <div className="projects-page-bg" aria-hidden="true">
           <div className="projects-page-bg-base" />
           <div
@@ -108,8 +105,8 @@ const Projects = () => {
           />
         </div>
 
-        <Container className="position-relative">
-          <section className="projects-hero pt-4 pt-lg-5 mt-4 mt-lg-5">
+        <div className="container mx-auto px-4 relative py-12 lg:py-20 mt-12">
+          <section className="mb-12 lg:mb-20">
             <ScrollReveal>
               <ProjectHeader
                 title="My Projects"
@@ -119,15 +116,17 @@ const Projects = () => {
             </ScrollReveal>
           </section>
 
-          <section className="projects-featured">
+          <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-12 lg:my-20"></div>
+
+          <section className="mb-12 lg:mb-20">
             <ScrollReveal delay={0.1}>
-              <div className="projects-section-panel p-3 p-md-4 p-lg-5">
-                <div className="d-flex align-items-center gap-3 mb-4">
-                  <div className="projects-section-icon">
+              <div className="bg-slate-900/50 border border-white/10 rounded-2xl p-6 md:p-10 backdrop-blur-sm">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="p-2 bg-primary/10 rounded-lg text-primary">
                     <Sparkles size={20} aria-hidden="true" />
                   </div>
-                  <h2 className="h4 text-white mb-0 fw-bold">Featured Projects</h2>
-                  <div className="flex-grow-1 border-bottom border-white-10"></div>
+                  <h2 className="text-xl text-white font-bold mb-0">Featured Projects</h2>
+                  <div className="h-px flex-grow bg-white/10"></div>
                 </div>
 
                 <ProjectMarqueeCarousel
@@ -139,9 +138,11 @@ const Projects = () => {
             </ScrollReveal>
           </section>
 
-          <section className="projects-filters">
+          <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-12 lg:my-20"></div>
+
+          <section className="mb-12 lg:mb-20">
             <ScrollReveal>
-              <div className="projects-section-panel p-3 p-md-4 p-lg-5">
+              <div className="bg-slate-900/50 border border-white/10 rounded-2xl p-6 md:p-10 backdrop-blur-sm">
                 <ProjectFilters
                   searchTerm={filters.search}
                   onSearchChange={handleSearchChange}
@@ -157,17 +158,19 @@ const Projects = () => {
             </ScrollReveal>
           </section>
 
-          <section className="projects-results pb-4 pb-lg-5">
+          <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-12 lg:my-20"></div>
+
+          <section className="mb-12 lg:mb-20">
             <ScrollReveal>
               {filteredProjects.length === 0 ? (
-                <div className="empty-state">
-                  <div className="empty-icon">🔍</div>
-                  <h3 className="text-white">No Projects Found</h3>
-                  <p className="text-secondary">
+                <div className="text-center py-20 bg-slate-900/30 rounded-3xl border border-white/5 border-dashed">
+                  <div className="text-6xl mb-4">🔍</div>
+                  <h3 className="text-2xl text-white font-bold mb-2">No Projects Found</h3>
+                  <p className="text-slate-400 mb-6 max-w-md mx-auto">
                     We couldn't find any projects matching your search or filter criteria. Try adjusting your filters or search term.
                   </p>
                   <button
-                    className="btn btn-primary"
+                    className="px-6 py-2 bg-primary hover:bg-primary-dark text-white rounded-full font-medium transition-colors"
                     onClick={() => {
                       updateFilter('search', '');
                       updateFilter('category', 'All');
@@ -178,106 +181,108 @@ const Projects = () => {
                   </button>
                 </div>
               ) : viewMode === 'grid' ? (
-                <Row className="g-3 g-md-4 projects-grid">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   <AnimatePresence>
                     {filteredProjects.map((project, index) => (
-                      <Col
+                      <div
                         key={project.id || `${project.title}-${index}`}
-                        xs={6}
-                        sm={4}
-                        md={4}
-                        lg={3}
+                        className="h-full"
                       >
                         <ProjectCard project={project} onClick={() => handleProjectSelect(project)} compact />
-                      </Col>
+                      </div>
                     ))}
                   </AnimatePresence>
-                </Row>
+                </div>
               ) : (
-                <Row className="g-3 g-md-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {filteredProjects.map((project, index) => (
-                    <Col key={project.id || `${project.title}-${index}`} xs={12} md={6}>
-                      <div className="project-list-item">
-                        <div className="project-content">
-                          <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
-                            <div className="flex-grow-1">
-                              <h3 className="project-title">{project.title}</h3>
-
-                              <div className="d-flex flex-wrap gap-2 mb-0">
-                                {(project.techStack || []).slice(0, 5).map((tech, i) => (
-                                  <span key={i} className="tech-badge">
-                                    {tech}
-                                  </span>
-                                ))}
-                                {(project.techStack || []).length > 5 && (
-                                  <span className="tech-badge">+{project.techStack.length - 5}</span>
-                                )}
-                              </div>
-                            </div>
-
-                            <button
-                              onClick={() => handleProjectSelect(project)}
-                              className="btn btn-outline-primary btn-sm mt-3 mt-md-0"
-                              type="button"
-                            >
-                              Lihat selengkapnya
-                            </button>
+                    <div key={project.id || `${project.title}-${index}`} className="group">
+                      <div className="bg-slate-900/50 border border-white/10 hover:border-primary/30 rounded-2xl p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 h-full flex flex-col">
+                        <div className="flex flex-col flex-grow">
+                          <div className="flex items-start justify-between mb-4">
+                            <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{project.title}</h3>
+                            <span className="bg-white/5 text-slate-300 text-xs px-2 py-1 rounded-full border border-white/10">
+                              {project.year || '2024'}
+                            </span>
                           </div>
+
+                          <p className="text-slate-400 text-sm mb-6 line-clamp-2 flex-grow">
+                            {project.description}
+                          </p>
+
+                          <div className="flex flex-wrap gap-2 mb-6">
+                            {(project.techStack || []).slice(0, 5).map((tech, i) => (
+                              <span key={i} className="text-xs px-2 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">
+                                {tech}
+                              </span>
+                            ))}
+                            {(project.techStack || []).length > 5 && (
+                              <span className="text-xs px-2 py-1 rounded-md bg-white/5 text-slate-400 border border-white/5">+{project.techStack.length - 5}</span>
+                            )}
+                          </div>
+
+                          <button
+                            onClick={() => handleProjectSelect(project)}
+                            className="w-full mt-auto py-2 rounded-lg border border-primary/30 text-primary font-medium hover:bg-primary/10 transition-colors text-sm"
+                            type="button"
+                          >
+                            View Details
+                          </button>
                         </div>
                       </div>
-                    </Col>
+                    </div>
                   ))}
-                </Row>
+                </div>
               )}
             </ScrollReveal>
+          </section>
 
-            <ScrollReveal delay={0.15}>
-              <div className="projects-cta mt-5">
-                <div className="projects-cta-panel p-3 p-md-4 p-lg-5">
-                  <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-4">
-                    <div>
-                      <div className="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill projects-cta-pill mb-3">
-                        <MessageSquare size={16} aria-hidden="true" />
-                        Available for freelance
-                      </div>
-                      <h3 className="h2 fw-bold text-white mb-2">Want to build something together?</h3>
-                      <p className="text-slate-200 mb-0" style={{ maxWidth: '720px' }}>
-                        If you like what you see here, let's talk. I'll help you ship a fast, modern, and maintainable product.
-                      </p>
+          <section className="pb-12 lg:pb-20">
+            <ScrollReveal>
+              <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border border-white/10 rounded-3xl p-8 lg:p-12 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 relative z-10">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 text-sm font-medium mb-4">
+                      <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                      Available for freelance
                     </div>
-                    <div className="d-flex gap-3 flex-wrap">
-                      <Button
-                        as={Link}
-                        to="/contact"
-                        variant="primary"
-                        className="px-4 py-2 rounded-pill fw-semibold d-inline-flex align-items-center gap-2"
-                      >
-                        <MessageSquare size={18} aria-hidden="true" />
-                        Contact Me
-                      </Button>
-                      <Button
-                        as="a"
-                        href="#top"
-                        variant="outline-light"
-                        className="px-4 py-2 rounded-pill fw-semibold d-inline-flex align-items-center gap-2"
-                      >
-                        Back to top
-                        <ArrowRight size={18} aria-hidden="true" />
-                      </Button>
-                    </div>
+                    <h2 className="text-2xl md:text-3xl text-white font-bold mb-3">Want to build something reliable?</h2>
+                    <p className="text-slate-300 mb-0 text-lg max-w-2xl">
+                      If you like what you see here, let's talk. I'll help you ship a fast, modern, and maintainable product.
+                    </p>
+                  </div>
+
+                  <div className="flex gap-3 flex-wrap">
+                    <Link
+                      to="/contact"
+                      className="px-6 py-3 rounded-full bg-primary hover:bg-primary-dark text-white font-semibold flex items-center gap-2 transition-all hover:scale-105 shadow-lg shadow-primary/20"
+                    >
+                      <MessageSquare size={18} />
+                      Contact Me
+                    </Link>
+                    <a
+                      href="/cv.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 text-white border border-white/10 font-semibold flex items-center gap-2 transition-all"
+                    >
+                      Download CV
+                    </a>
                   </div>
                 </div>
               </div>
             </ScrollReveal>
           </section>
-        </Container>
+        </div>
 
         {/* Project Modal */}
         <AnimatePresence>
           {selectedProject && (
-            <ProjectModal 
-              project={selectedProject} 
-              onClose={handleCloseModal} 
+            <ProjectModal
+              project={selectedProject}
+              onClose={handleCloseModal}
             />
           )}
         </AnimatePresence>

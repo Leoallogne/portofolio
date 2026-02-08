@@ -1,24 +1,27 @@
-import React, { useEffect, useId, useMemo, useRef } from 'react';
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { 
-  X, 
-  ExternalLink, 
-  Github, 
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  X,
+  ExternalLink,
+  Github,
   Calendar,
-  Users, 
-  Clock, 
-  ArrowLeft, 
+  Users,
+  Clock,
+  ArrowLeft,
   ArrowRight,
-  CheckCircle
+  CheckCircle,
+  FileText,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
-import { Badge, Carousel } from 'react-bootstrap';
 
 const MotionDiv = motion.div
 
 const ProjectModal = ({ project, onClose }) => {
   const titleId = useId();
   const descriptionId = useId();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const modalRef = useRef(null);
   const closeBtnRef = useRef(null);
@@ -107,47 +110,49 @@ const ProjectModal = ({ project, onClose }) => {
   const projectData = project || {};
 
   const {
-    title,
-    description,
-    longDescription,
+    title = 'Untitled Project',
+    description = '',
+    longDescription = '',
     techStack = [],
     links = [],
     gallery = [],
     challenges = [],
-    solution,
-    role,
-    teamSize,
-    duration,
-    date,
+    solution = '',
+    role = 'Not specified',
+    teamSize = 0,
+    duration = 'Not specified',
+    date = '',
     results = [],
-    testimonial,
-    category,
-    image,
-    link,
+    testimonial = null,
+    category = 'Project',
+    image = '',
+    link = '',
   } = projectData;
 
   const backdropVariants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
       transition: { duration: 0.3 }
     }
   };
 
   const modalVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { 
-      opacity: 1, 
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
+    visible: {
+      opacity: 1,
       y: 0,
+      scale: 1,
       transition: {
         type: 'spring',
         damping: 25,
         stiffness: 300
       }
     },
-    exit: { 
-      opacity: 0, 
+    exit: {
+      opacity: 0,
       y: 50,
+      scale: 0.95,
       transition: { duration: 0.2 }
     }
   };
@@ -169,22 +174,38 @@ const ProjectModal = ({ project, onClose }) => {
     (l) => l?.url && l?.type && l.type !== 'demo' && l.type !== 'github',
   );
 
-  const heroImage = (gallery && gallery.length > 0 && gallery[0]?.url) ? gallery[0].url : image;
-  const heroAlt = (gallery && gallery.length > 0 && gallery[0]?.alt) ? gallery[0].alt : (title ? `Screenshot of ${title}` : 'Project image');
+  const heroImage = (gallery?.[0]?.url) || image || '';
+  const heroAlt = gallery?.[0]?.alt || `Screenshot of ${title}`;
+
+  const nextImage = () => {
+    if (gallery.length) {
+      setCurrentImageIndex((prev) => (prev + 1) % gallery.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (gallery.length) {
+      setCurrentImageIndex((prev) => (prev - 1 + gallery.length) % gallery.length);
+    }
+  };
 
   if (!project) return null;
 
   return (
     <MotionDiv
-      className="modal-backdrop-custom"
-      variants={backdropVariants}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
       initial="hidden"
       animate="visible"
       exit="hidden"
-      onClick={onClose}
     >
-      <MotionDiv 
-        className="modal-content-custom"
+      <MotionDiv
+        variants={backdropVariants}
+        className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      <MotionDiv
+        className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-slate-900 border border-white/10 rounded-3xl shadow-2xl custom-scrollbar"
         variants={modalVariants}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
@@ -193,10 +214,10 @@ const ProjectModal = ({ project, onClose }) => {
         aria-describedby={descriptionId}
         ref={modalRef}
       >
-        <button 
+        <button
           onClick={onClose}
           ref={closeBtnRef}
-          className="modal-close-btn"
+          className="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/50"
           aria-label="Close modal"
           type="button"
         >
@@ -204,151 +225,175 @@ const ProjectModal = ({ project, onClose }) => {
         </button>
 
         {heroImage && (
-          <div className="modal-image-wrapper">
-            <img src={heroImage} alt={heroAlt} className="modal-image" loading="lazy" />
-            <div className="modal-image-overlay" />
+          <div className="relative aspect-video w-full overflow-hidden">
+            <img src={heroImage} alt={heroAlt} className="w-full h-full object-cover" loading="lazy" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-90" />
             {category ? (
-              <div className="modal-category-badge" aria-label={`Category: ${category}`}> 
+              <div className="absolute top-6 left-6 bg-primary/20 backdrop-blur-md border border-primary/20 text-primary font-semibold px-4 py-1.5 rounded-full text-sm">
                 {category}
               </div>
             ) : null}
           </div>
         )}
 
-        <div className="modal-body-custom">
-          <h2 id={titleId} className="modal-title-custom">
-            {title}
-          </h2>
-
-          <div className="modal-quick-info">
-            {role ? (
-              <div className="quick-info-item">
-                <Users size={16} aria-hidden="true" />
-                <span>{role}</span>
-              </div>
-            ) : null}
-            {teamSize ? (
-              <div className="quick-info-item">
-                <Users size={16} aria-hidden="true" />
-                <span>{teamSize} {teamSize === 1 ? 'person' : 'people'}</span>
-              </div>
-            ) : null}
-            {duration ? (
-              <div className="quick-info-item">
-                <Clock size={16} aria-hidden="true" />
-                <span>{duration}</span>
-              </div>
-            ) : null}
+        <div className="p-6 md:p-10 -mt-20 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
+            <div>
+              <h2 id={titleId} className="text-3xl md:text-4xl font-bold text-white mb-3">
+                {title}
+              </h2>
+              {category && (
+                <span className="md:hidden inline-block bg-primary/10 text-primary font-medium px-3 py-1 rounded-full text-sm border border-primary/20">
+                  {category}
+                </span>
+              )}
+            </div>
+            <div className="text-right">
+              {date && (
+                <div className="text-slate-400 text-sm flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
+                  <Calendar size={14} />
+                  {formattedDate}
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="modal-section">
-            <div className="modal-section-title">Overview</div>
-            <div className="modal-meta-grid">
-              <div className="modal-meta-item">
-                <div className="modal-meta-label">Category</div>
-                <div className="modal-meta-value">{category || '—'}</div>
+          <div className="flex flex-wrap gap-4 mb-8">
+            <div className="flex items-center text-slate-300 bg-white/5 px-4 py-2 rounded-xl border border-white/5">
+              <Users size={18} className="mr-2 text-primary" />
+              <span className="font-medium">{role}</span>
+            </div>
+            {teamSize > 0 && (
+              <div className="flex items-center text-slate-300 bg-white/5 px-4 py-2 rounded-xl border border-white/5">
+                <Users size={18} className="mr-2 text-primary" />
+                <span className="font-medium">{teamSize} {teamSize === 1 ? 'person' : 'people'}</span>
               </div>
-              <div className="modal-meta-item">
-                <div className="modal-meta-label">Date</div>
-                <div className="modal-meta-value d-inline-flex align-items-center gap-2">
-                  <Calendar size={14} aria-hidden="true" />
-                  <span>{formattedDate || '—'}</span>
-                </div>
+            )}
+            {duration && (
+              <div className="flex items-center text-slate-300 bg-white/5 px-4 py-2 rounded-xl border border-white/5">
+                <Clock size={18} className="mr-2 text-primary" />
+                <span className="font-medium">{duration}</span>
               </div>
-              <div className="modal-meta-item">
-                <div className="modal-meta-label">Role</div>
-                <div className="modal-meta-value">{role || '—'}</div>
-              </div>
-              <div className="modal-meta-item">
-                <div className="modal-meta-label">Team Size</div>
-                <div className="modal-meta-value">{teamSize ? `${teamSize}` : '—'}</div>
-              </div>
-              <div className="modal-meta-item">
-                <div className="modal-meta-label">Duration</div>
-                <div className="modal-meta-value">{duration || '—'}</div>
-              </div>
-              <div className="modal-meta-item">
-                <div className="modal-meta-label">Tech</div>
-                <div className="modal-meta-value">{Array.isArray(techStack) ? `${techStack.length} tech` : '—'}</div>
-              </div>
+            )}
+          </div>
+
+          {/* Project Overview */}
+          <div className="mb-8">
+            <h3 className="text-xl font-bold text-white mb-4">Project Overview</h3>
+            <div className="bg-slate-800/50 border border-white/5 rounded-2xl p-6 leading-relaxed text-slate-300">
+              <p className="mb-0">{longDescription || description || 'No description available.'}</p>
             </div>
           </div>
 
           {/* Gallery */}
-          {gallery.length > 1 && (
-            <div className="mb-4">
-              <Carousel 
-                indicators={gallery.length > 1}
-                controls={gallery.length > 1}
-                nextIcon={<span className="carousel-control-next-icon" aria-hidden="true"><ArrowRight size={24} /></span>}
-                prevIcon={<span className="carousel-control-prev-icon" aria-hidden="true"><ArrowLeft size={24} /></span>}
-              >
-                {gallery.map((imgItem, index) => (
-                  <Carousel.Item key={index}>
-                    <div className="ratio ratio-16x9 bg-dark rounded overflow-hidden">
-                      <img 
-                        src={imgItem.url} 
-                        alt={imgItem.alt || `Project screenshot ${index + 1}`} 
-                        className="img-fluid object-fit-cover"
-                        loading="lazy"
-                      />
+          {gallery.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-xl font-bold text-white mb-4">Project Gallery</h3>
+              <div className="relative rounded-2xl overflow-hidden bg-slate-950 aspect-video group border border-white/10">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={currentImageIndex}
+                    src={gallery[currentImageIndex].url}
+                    alt={gallery[currentImageIndex].alt || `${title} screenshot ${currentImageIndex + 1}`}
+                    className="w-full h-full object-contain bg-slate-950"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </AnimatePresence>
+
+                {gallery.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur hover:bg-black/70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label="Previous image"
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur hover:bg-black/70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label="Next image"
+                    >
+                      <ChevronRight size={20} />
+                    </button>
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                      {gallery.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setCurrentImageIndex(idx)}
+                          className={`w-2 h-2 rounded-full transition-all ${idx === currentImageIndex ? 'bg-white w-4' : 'bg-white/50 hover:bg-white/80'
+                            }`}
+                          aria-label={`Go to image ${idx + 1}`}
+                        />
+                      ))}
                     </div>
-                  </Carousel.Item>
-                ))}
-              </Carousel>
+                  </>
+                )}
+              </div>
             </div>
           )}
 
-          {/* Description */}
-          <div className="mb-4">
-            <h3 className="h5 text-white mb-3">About This Project</h3>
-            <p id={descriptionId} className="text-secondary">{longDescription || description || 'No description provided.'}</p>
-          </div>
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-4 justify-center my-10">
+            {projectData?.id && (
+              <Link
+                to={`/projects/${projectData.id}`}
+                className="px-6 py-3 rounded-full border border-white/10 hover:bg-white/10 transition-colors text-white font-medium flex items-center gap-2 min-w-[160px] justify-center"
+              >
+                <FileText size={18} className="text-slate-300" aria-hidden="true" />
+                View Details
+              </Link>
+            )}
 
-          <div className="modal-cta-bar">
             {demoLink?.url ? (
               isInternalUrl(demoLink.url) ? (
-                <Link to={demoLink.url} className="btn btn-primary btn-sm d-inline-flex align-items-center">
-                  <ExternalLink size={16} className="me-2" aria-hidden="true" />
+                <Link
+                  to={demoLink.url}
+                  className="px-6 py-3 rounded-full bg-primary hover:bg-primary-dark transition-colors text-white font-bold shadow-lg shadow-primary/25 flex items-center gap-2 min-w-[160px] justify-center"
+                >
+                  <ExternalLink size={18} aria-hidden="true" />
                   Live Demo
                 </Link>
               ) : (
-                <a href={demoLink.url} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm d-inline-flex align-items-center">
-                  <ExternalLink size={16} className="me-2" aria-hidden="true" />
+                <a
+                  href={demoLink.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 rounded-full bg-primary hover:bg-primary-dark transition-colors text-white font-bold shadow-lg shadow-primary/25 flex items-center gap-2 min-w-[160px] justify-center"
+                >
+                  <ExternalLink size={18} aria-hidden="true" />
                   Live Demo
                 </a>
               )
-            ) : (
-              <button type="button" className="btn btn-primary btn-sm d-inline-flex align-items-center" disabled>
-                <ExternalLink size={16} className="me-2" aria-hidden="true" />
-                Live Demo
-              </button>
-            )}
+            ) : null}
 
             {githubLink?.url ? (
-              <a href={githubLink.url} target="_blank" rel="noopener noreferrer" className="btn btn-outline-light btn-sm d-inline-flex align-items-center">
-                <Github size={16} className="me-2" aria-hidden="true" />
+              <a
+                href={githubLink.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 rounded-full border border-white/10 hover:bg-white/10 transition-colors text-white font-medium flex items-center gap-2 min-w-[160px] justify-center"
+              >
+                <Github size={18} className="text-slate-300" aria-hidden="true" />
                 Source Code
               </a>
-            ) : (
-              <button type="button" className="btn btn-outline-light btn-sm d-inline-flex align-items-center" disabled>
-                <Github size={16} className="me-2" aria-hidden="true" />
-                Source Code
-              </button>
-            )}
+            ) : null}
           </div>
 
           {additionalLinks.length > 0 && (
-            <div className="modal-section">
-              <div className="modal-section-title">Additional Links</div>
-              <div className="d-flex flex-wrap gap-2">
+            <div className="mb-8 p-6 bg-slate-800/50 rounded-2xl border border-white/5">
+              <div className="text-slate-400 font-medium mb-3">Additional Links</div>
+              <div className="flex flex-wrap gap-2">
                 {additionalLinks.map((l, i) =>
                   isInternalUrl(l.url) ? (
-                    <Link key={`${l.type}-${i}`} to={l.url} className="btn btn-outline-light btn-sm">
+                    <Link key={`${l.type}-${i}`} to={l.url} className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white text-sm border border-white/5 transition-colors">
                       {l.type}
                     </Link>
                   ) : (
-                    <a key={`${l.type}-${i}`} href={l.url} target="_blank" rel="noopener noreferrer" className="btn btn-outline-light btn-sm">
+                    <a key={`${l.type}-${i}`} href={l.url} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white text-sm border border-white/5 transition-colors">
                       {l.type}
                     </a>
                   ),
@@ -357,91 +402,107 @@ const ProjectModal = ({ project, onClose }) => {
             </div>
           )}
 
-          {/* Tech Stack */}
-          <div className="mb-4">
-            <h3 className="h5 text-white mb-3">Technologies Used</h3>
-            <div className="d-flex flex-wrap gap-2">
-              {techStack.map((tech, i) => (
-                <Badge 
-                  key={i}
-                  bg="primary"
-                  className="bg-opacity-10 text-primary fw-medium px-3 py-2 rounded-pill"
-                >
-                  {tech}
-                </Badge>
-              ))}
-            </div>
-          </div>
 
           {/* Project Details */}
-          <div className="row g-4 mb-4">
-            {role && (
-              <div className="col-md-6">
-                <div className="d-flex align-items-center mb-2">
-                  <Users size={18} className="text-primary me-2" />
-                  <span className="text-white fw-medium">Role:</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div>
+              <div className="h-full bg-slate-800/50 border border-white/5 rounded-2xl p-6">
+                <h4 className="text-lg font-bold text-white mb-4">Project Details</h4>
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex items-center text-slate-400 mb-1 text-sm">
+                      <Users size={16} className="mr-2" />
+                      <span>Role</span>
+                    </div>
+                    <p className="mb-0 text-white font-medium">{role}</p>
+                  </div>
+
+                  {teamSize > 0 && (
+                    <div>
+                      <div className="flex items-center text-slate-400 mb-1 text-sm">
+                        <Users size={16} className="mr-2" />
+                        <span>Team Size</span>
+                      </div>
+                      <p className="mb-0 text-white font-medium">{teamSize} {teamSize === 1 ? 'person' : 'people'}</p>
+                    </div>
+                  )}
+
+                  <div>
+                    <div className="flex items-center text-slate-400 mb-1 text-sm">
+                      <Clock size={16} className="mr-2" />
+                      <span>Duration</span>
+                    </div>
+                    <p className="mb-0 text-white font-medium">{duration}</p>
+                  </div>
+
+                  {date && (
+                    <div>
+                      <div className="flex items-center text-slate-400 mb-1 text-sm">
+                        <Calendar size={16} className="mr-2" />
+                        <span>Date</span>
+                      </div>
+                      <p className="mb-0 text-white font-medium">{formattedDate}</p>
+                    </div>
+                  )}
                 </div>
-                <p className="text-secondary mb-0">{role}</p>
               </div>
-            )}
-            
-            {teamSize && (
-              <div className="col-md-6">
-                <div className="d-flex align-items-center mb-2">
-                  <Users size={18} className="text-primary me-2" />
-                  <span className="text-white fw-medium">Team Size:</span>
+            </div>
+
+            {/* Tech Stack */}
+            {techStack.length > 0 && (
+              <div>
+                <div className="h-full bg-slate-800/50 border border-white/5 rounded-2xl p-6">
+                  <h4 className="text-lg font-bold text-white mb-4">Technologies Used</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {techStack.map((tech, i) => (
+                      <span
+                        key={i}
+                        className="bg-primary/10 text-primary font-medium px-3 py-1.5 rounded-full text-sm border border-primary/20"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <p className="text-secondary mb-0">{teamSize} {teamSize === 1 ? 'person' : 'people'}</p>
-              </div>
-            )}
-            
-            {duration && (
-              <div className="col-md-6">
-                <div className="d-flex align-items-center mb-2">
-                  <Clock size={18} className="text-primary me-2" />
-                  <span className="text-white fw-medium">Duration:</span>
-                </div>
-                <p className="text-secondary mb-0">{duration}</p>
               </div>
             )}
           </div>
 
           {/* Challenges & Solution */}
           {challenges.length > 0 && (
-            <div className="mb-4">
-              <h3 className="h5 text-white mb-3">Challenges & Solutions</h3>
-              <div className="card bg-dark bg-opacity-25 border border-secondary border-opacity-25">
-                <div className="card-body">
-                  <h4 className="h6 text-white mb-3">Challenges:</h4>
-                  <ul className="mb-0">
+            <div className="mb-8">
+              <div className="bg-slate-800/50 border border-white/5 rounded-2xl p-6">
+                <h3 className="text-xl font-bold text-white mb-4">Challenges & Solutions</h3>
+                <div className="mb-4">
+                  <h4 className="text-primary font-semibold mb-2">Challenges:</h4>
+                  <ul className="space-y-2">
                     {challenges.map((challenge, i) => (
-                      <li key={i} className="mb-2 text-secondary">
-                        {challenge}
+                      <li key={i} className="text-slate-300 flex gap-2">
+                        <span className="text-primary mt-1.5 w-1.5 h-1.5 rounded-full bg-current block flex-shrink-0" />
+                        <span>{challenge}</span>
                       </li>
                     ))}
                   </ul>
-                  
-                  {solution && (
-                    <>
-                      <h4 className="h6 text-white mt-4 mb-3">Solution:</h4>
-                      <p className="text-secondary mb-0">{solution}</p>
-                    </>
-                  )}
                 </div>
+
+                {solution && (
+                  <div className="mt-6 pt-6 border-t border-white/5">
+                    <h4 className="text-primary font-semibold mb-2">Solution:</h4>
+                    <p className="text-slate-300 mb-0 leading-relaxed">{solution}</p>
+                  </div>
+                )}
               </div>
             </div>
           )}
           {/* Results */}
           {results.length > 0 && (
-            <div className="mb-4">
-              <h3 className="h5 text-white mb-3">Key Results</h3>
-              <div className="row g-3">
+            <div className="mb-8">
+              <h3 className="text-xl font-bold text-white mb-4">Key Results</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {results.map((result, i) => (
-                  <div key={i} className="col-md-6">
-                    <div className="d-flex">
-                      <CheckCircle size={20} className="text-success mt-1 me-2 flex-shrink-0" />
-                      <p className="text-secondary mb-0">{result}</p>
-                    </div>
+                  <div key={i} className="bg-slate-800/30 border border-white/5 rounded-xl p-4 flex items-start gap-3">
+                    <CheckCircle size={20} className="text-green-400 mt-0.5 flex-shrink-0" />
+                    <p className="text-slate-300 mb-0">{result}</p>
                   </div>
                 ))}
               </div>
@@ -450,16 +511,14 @@ const ProjectModal = ({ project, onClose }) => {
 
           {/* Testimonial */}
           {testimonial && (
-            <div className="card bg-primary bg-opacity-10 border border-primary border-opacity-25 mb-4">
-              <div className="card-body">
-                <blockquote className="blockquote mb-0">
-                  <p className="text-white-75 fst-italic mb-3">"{testimonial.text}"</p>
-                  <footer className="blockquote-footer text-primary mt-0">
-                    <span className="d-block fw-bold">{testimonial.author}</span>
-                    {testimonial.role} {testimonial.company && `at ${testimonial.company}`}
-                  </footer>
-                </blockquote>
-              </div>
+            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 mb-4">
+              <blockquote className="border-l-4 border-primary pl-4 py-1">
+                <p className="text-slate-200 italic mb-4 text-lg">"{testimonial.text}"</p>
+                <footer className="text-primary">
+                  <span className="block font-bold">{testimonial.author}</span>
+                  <span className="text-sm opacity-80">{testimonial.role} {testimonial.company && `at ${testimonial.company}`}</span>
+                </footer>
+              </blockquote>
             </div>
           )}
         </div>

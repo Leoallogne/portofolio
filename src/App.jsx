@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Projects from './pages/Projects/index.jsx';
+import ProjectDetail from './pages/Projects/Detail.jsx';
 import Contact from './pages/Contact';
 import ParticlesBackground from './components/ParticlesBackground';
 import ScrollProgress from './components/ScrollProgress';
@@ -16,6 +17,7 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/:projectId" element={<ProjectDetail />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
     </AnimatePresence>

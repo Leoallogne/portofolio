@@ -1,5 +1,4 @@
-import React from 'react'
-import { Card, Badge } from 'react-bootstrap'
+import React, { memo } from 'react'
 
 const gradientMap = {
     'Languages': 'from-blue-500 to-cyan-400',
@@ -14,63 +13,37 @@ const SkillCard = ({ title, skills, icon: Icon }) => {
     const gradientClass = gradientMap[title] || 'from-blue-500 to-cyan-400'
 
     return (
-        <Card className="h-100 border-0 bg-gradient-to-br from-slate-800 to-slate-900 text-white overflow-hidden position-relative skill-card">
-            <div className="position-absolute top-0 end-0 w-100 h-100 bg-gradient-to-br from-transparent to-slate-800 opacity-30" />
-            
-            <Card.Body className="p-5 position-relative z-1">
-                <div className="d-flex align-items-center gap-4 mb-4">
-                    <div className={`p-3 rounded-3 bg-gradient-to-br ${gradientClass} shadow-lg`}>
+        <div className="h-full bg-gradient-to-br from-slate-800 to-slate-900 border border-white/5 text-white rounded-2xl overflow-hidden relative group hover:-translate-y-1 transition-all duration-300 hover:shadow-xl hover:shadow-black/20">
+            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-transparent to-slate-800 opacity-30 pointer-events-none" />
+
+            <div className="p-6 md:p-8 relative z-10 flex flex-col h-full">
+                <div className="flex items-center gap-4 mb-6">
+                    <div className={`p-3 rounded-xl bg-gradient-to-br ${gradientClass} shadow-lg shadow-black/20`}>
                         <IconComponent size={24} className="text-white" />
                     </div>
-                    <h3 className="h4 fw-bold mb-0 text-gradient">
+                    <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${gradientClass} bg-white">
                         <span className={`bg-clip-text text-transparent bg-gradient-to-r ${gradientClass}`}>
                             {title}
                         </span>
                     </h3>
                 </div>
 
-                <div className="d-flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mt-auto">
                     {skills.map((skill, index) => (
-                        <Badge
+                        <div
                             key={index}
-                            className={`border-0 fw-medium px-3 py-2 rounded-pill bg-slate-800 text-white position-relative overflow-hidden skill-badge`}
+                            className="relative overflow-hidden rounded-full bg-slate-800 border border-white/5 group/badge"
                         >
-                            <span className="position-relative z-1">{skill}</span>
-                            <span className={`position-absolute top-0 start-0 w-100 h-100 bg-gradient-to-r ${gradientClass} opacity-0 hover:opacity-100 transition-all duration-300`} />
-                        </Badge>
+                            <span className={`absolute inset-0 bg-gradient-to-r ${gradientClass} opacity-0 group-hover/badge:opacity-100 transition-opacity duration-300`} />
+                            <span className="relative z-10 block px-3 py-1.5 text-sm font-medium text-slate-300 group-hover/badge:text-white transition-colors duration-300">
+                                {skill}
+                            </span>
+                        </div>
                     ))}
                 </div>
-            </Card.Body>
-            
-            <style jsx global>{`
-                .skill-card {
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
-                    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
-                }
-                
-                .skill-card:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
-                }
-                
-                .skill-badge {
-                    transition: all 0.3s ease;
-                    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-                }
-                
-                .skill-badge:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.2);
-                }
-                
-                .text-gradient {
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                }
-            `}</style>
-        </Card>
+            </div>
+        </div>
     )
 }
 
-export default React.memo(SkillCard)
+export default memo(SkillCard)

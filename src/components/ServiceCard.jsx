@@ -1,23 +1,24 @@
 import React from 'react'
-import { Card } from 'react-bootstrap'
 
 const ServiceCard = ({ title, description, icon: Icon }) => {
     const IconComponent = Icon
 
     return (
-        <Card className="h-100 border-0 text-white text-center service-card-new overflow-hidden position-relative">
-            <div className="service-card-new__bg" aria-hidden="true" />
-            <Card.Body className="d-flex flex-column align-items-center p-4 p-lg-5 position-relative">
-                <div className="service-icon-chip mb-4">
-                    <span className="service-icon-chip__glow" aria-hidden="true" />
-                    <IconComponent size={32} className="text-white" />
+        <div className="h-full bg-slate-900 border border-white/5 text-white text-center rounded-2xl overflow-hidden relative group hover:-translate-y-1 transition-transform duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" aria-hidden="true" />
+            <div className="flex flex-col items-center p-8 lg:p-10 relative z-10 h-full">
+                <div className="relative mb-6">
+                    <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
+                    <div className="relative w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-colors duration-300">
+                        <IconComponent size={32} />
+                    </div>
                 </div>
-                <Card.Title className="h5 fw-bold mb-3 service-title">{title}</Card.Title>
-                <Card.Text className="service-desc mb-0">
+                <h3 className="text-xl font-bold mb-4">{title}</h3>
+                <p className="text-slate-400 mb-0 leading-relaxed">
                     {description}
-                </Card.Text>
-            </Card.Body>
-        </Card>
+                </p>
+            </div>
+        </div>
     )
 }
 

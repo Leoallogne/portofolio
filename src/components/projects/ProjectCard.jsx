@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { Card, Badge } from 'react-bootstrap';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -17,32 +16,31 @@ const ProjectCard = memo(({ project, onClick, compact = false, ctaLabel = 'Lihat
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5 }}
       transition={{ duration: 0.3 }}
-      className="h-100"
+      className="h-full"
       role="article"
       aria-label={`Project: ${title}`}
     >
-      <Card className={`h-100 border-0 shadow-sm bg-dark bg-opacity-50 text-white overflow-hidden project-card${compact ? ' project-card--compact' : ''}`}>
-        <div className="position-relative overflow-hidden project-card-media">
-          <div className="position-absolute top-0 start-0 w-100 h-100 bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center">
-            <span className="visually-hidden">{`${title} project image`}</span>
-            <div className="text-white-50 fs-1 opacity-25 fw-bold">{title[0]}</div>
+      <div className={`group h-full bg-slate-900/50 backdrop-blur-sm border border-white/5 overflow-hidden rounded-2xl flex flex-col ${compact ? 'shadow-sm' : 'shadow-lg hover:shadow-xl transition-shadow'}`}>
+        <div className="relative overflow-hidden aspect-video bg-slate-800">
+          <div className="absolute inset-0 bg-slate-800 flex items-center justify-center">
+            <span className="sr-only">{`${title} project image`}</span>
+            <div className="text-white/20 text-6xl font-bold">{title[0]}</div>
           </div>
           {image && (
-            <Card.Img
-              variant="top"
+            <img
               src={image}
               alt={`Screenshot of ${title} project`}
-              className="w-100 h-100 object-fit-cover position-relative z-1"
+              className="w-full h-full object-cover relative z-10 transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
               width={400}
               height={200}
             />
           )}
           {!compact && (
-            <div className="overlay position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center opacity-0 hover-opacity-100 transition-all z-2">
+            <div className="absolute inset-0 bg-slate-950/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
               <button
                 onClick={onClick}
-                className="btn btn-light rounded-circle p-3 border-0 focus-ring focus-ring-light"
+                className="bg-white text-slate-900 rounded-full p-4 hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-white/50"
                 aria-label={`View details of ${title} project`}
                 type="button"
               >
@@ -52,40 +50,38 @@ const ProjectCard = memo(({ project, onClick, compact = false, ctaLabel = 'Lihat
           )}
         </div>
 
-        <Card.Body className="d-flex flex-column p-4">
-          <Card.Title as="h3" className="h5 fw-bold mb-3">
+        <div className={`flex flex-col flex-grow ${compact ? 'p-4' : 'p-6'}`}>
+          <h3 className={`font-bold text-white ${compact ? 'text-lg mb-2' : 'text-xl mb-3'}`}>
             {title}
-          </Card.Title>
+          </h3>
           {!compact && (
-            <Card.Text className="text-secondary small mb-4 flex-grow-1 lh-lg">
+            <p className="text-slate-400 text-sm mb-4 flex-grow leading-relaxed line-clamp-3">
               {description}
-            </Card.Text>
+            </p>
           )}
 
-          <div className="d-flex flex-wrap gap-2 mt-auto" aria-label="Technologies used">
+          <div className="flex flex-wrap gap-2 mt-auto" aria-label="Technologies used">
             {visibleTech.map((tech, i) => (
-              <Badge 
-                key={`${tech}-${i}`} 
-                bg="primary" 
-                className="bg-opacity-10 text-primary fw-medium px-3 py-2 rounded-pill"
+              <span
+                key={`${tech}-${i}`}
+                className="bg-primary/10 text-primary font-medium px-3 py-1 rounded-full text-xs border border-primary/20"
               >
                 {tech}
-              </Badge>
+              </span>
             ))}
             {hiddenTechCount > 0 && (
-              <Badge
-                bg="primary"
-                className="bg-opacity-10 text-primary fw-medium px-3 py-2 rounded-pill"
+              <span
+                className="bg-primary/10 text-primary font-medium px-3 py-1 rounded-full text-xs border border-primary/20"
               >
                 +{hiddenTechCount}
-              </Badge>
+              </span>
             )}
           </div>
 
           {compact && (
             <button
               onClick={onClick}
-              className="btn btn-outline-primary btn-sm mt-3 d-inline-flex align-items-center justify-content-center gap-2"
+              className="mt-4 w-full py-2 flex items-center justify-center gap-2 text-primary border border-primary/20 rounded-xl hover:bg-primary/5 transition-colors text-sm font-medium"
               type="button"
               aria-label={`Lihat selengkapnya: ${title}`}
             >
@@ -93,8 +89,8 @@ const ProjectCard = memo(({ project, onClick, compact = false, ctaLabel = 'Lihat
               <ArrowRight size={16} aria-hidden="true" />
             </button>
           )}
-        </Card.Body>
-      </Card>
+        </div>
+      </div>
     </MotionDiv>
   );
 });

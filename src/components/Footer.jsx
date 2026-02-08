@@ -1,84 +1,99 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Container, Row, Col } from 'react-bootstrap'
 import { Github, Linkedin, Mail, ArrowUpRight } from 'lucide-react'
 
 const Footer = () => {
     return (
-        <footer className="py-5 mt-auto border-top border-white-10 footer-new">
-            <Container>
-                <Row className="gy-5">
-                    <Col lg={4}>
-                        <div className="mb-4">
-                            <h3 className="h5 fw-bold text-white mb-3">Muhammad Syafiq</h3>
-                            <p className="text-secondary lh-lg mb-0" style={{ maxWidth: '340px' }}>
+        <footer className="py-12 mt-auto border-t border-white/10 bg-slate-950 text-slate-300">
+            <div className="container mx-auto px-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12 mb-12">
+                    <div className="lg:col-span-4">
+                        <div className="mb-6">
+                            <h3 className="text-xl font-bold text-white mb-4">Muhammad Syafiq</h3>
+                            <p className="text-slate-400 leading-relaxed max-w-sm">
                                 Building modern web applications and digital solutions with a focus on web performance and user experience.
                             </p>
                         </div>
 
-                        <div className="d-flex gap-3">
+                        <div className="flex gap-4">
                             <a
                                 href="https://github.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="footer-social"
+                                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all duration-300"
                                 aria-label="GitHub"
                             >
-                                <Github size={18} />
+                                <Github size={20} />
                             </a>
                             <a
                                 href="https://linkedin.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="footer-social"
+                                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all duration-300"
                                 aria-label="LinkedIn"
                             >
-                                <Linkedin size={18} />
+                                <Linkedin size={20} />
                             </a>
-                            <a href="mailto:leoallogne@gmail.com" className="footer-social" aria-label="Email">
-                                <Mail size={18} />
+                            <a
+                                href="mailto:leoallogne@gmail.com"
+                                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all duration-300"
+                                aria-label="Email"
+                            >
+                                <Mail size={20} />
                             </a>
                         </div>
-                    </Col>
+                    </div>
 
-                    <Col lg={2} sm={6}>
-                        <h4 className="h6 fw-bold text-primary text-uppercase letter-spacing-1 mb-4">Navigation</h4>
-                        <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
+                    <div className="lg:col-span-2 sm:col-span-6">
+                        <h4 className="text-sm font-bold text-primary uppercase tracking-wider mb-6">Navigation</h4>
+                        <ul className="space-y-3">
                             <li>
-                                <Link to="/" className="footer-link">
-                                    Home <ArrowUpRight size={14} />
+                                <Link to="/" className="text-slate-400 hover:text-white transition-colors flex items-center group">
+                                    Home <ArrowUpRight size={14} className="ml-1 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/projects" className="footer-link">
-                                    Projects <ArrowUpRight size={14} />
+                                <Link to="/projects" className="text-slate-400 hover:text-white transition-colors flex items-center group">
+                                    Projects <ArrowUpRight size={14} className="ml-1 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/contact" className="footer-link">
-                                    Contact <ArrowUpRight size={14} />
+                                <Link to="/contact" className="text-slate-400 hover:text-white transition-colors flex items-center group">
+                                    Contact <ArrowUpRight size={14} className="ml-1 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
                                 </Link>
                             </li>
                         </ul>
-                    </Col>
+                    </div>
 
-                    <Col lg={2} sm={6}>
-                        <h4 className="h6 fw-bold text-primary text-uppercase letter-spacing-1 mb-4">Connect</h4>
-                        <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
-                            <li><a href="https://github.com" target="_blank" rel="noopener noreferrer" className="footer-link">GitHub <ArrowUpRight size={14} /></a></li>
-                            <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="footer-link">LinkedIn <ArrowUpRight size={14} /></a></li>
-                            <li><a href="mailto:leoallogne@gmail.com" className="footer-link">Email <ArrowUpRight size={14} /></a></li>
+                    <div className="lg:col-span-2 sm:col-span-6">
+                        <h4 className="text-sm font-bold text-primary uppercase tracking-wider mb-6">Connect</h4>
+                        <ul className="space-y-3">
+                            <li>
+                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors flex items-center group">
+                                    GitHub <ArrowUpRight size={14} className="ml-1 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors flex items-center group">
+                                    LinkedIn <ArrowUpRight size={14} className="ml-1 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="mailto:leoallogne@gmail.com" className="text-slate-400 hover:text-white transition-colors flex items-center group">
+                                    Email <ArrowUpRight size={14} className="ml-1 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
+                                </a>
+                            </li>
                         </ul>
-                    </Col>
+                    </div>
 
-                    <Col lg={4}>
-                        <div className="text-lg-end text-secondary small pt-lg-2">
-                            <p className="mb-0">&copy; {new Date().getFullYear()} Muhammad Syafiq.</p>
-                            <p className="mb-0">All rights reserved.</p>
+                    <div className="lg:col-span-4">
+                        <div className="lg:text-right text-slate-500 text-sm">
+                            <p className="mb-2">&copy; {new Date().getFullYear()} Muhammad Syafiq.</p>
+                            <p>All rights reserved.</p>
                         </div>
-                    </Col>
-                </Row>
-            </Container>
+                    </div>
+                </div>
+            </div>
         </footer>
     )
 }
